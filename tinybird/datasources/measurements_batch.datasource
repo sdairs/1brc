@@ -1,0 +1,7 @@
+
+SCHEMA >
+    `name` String,
+    `measurement` Float32
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "name"

@@ -1,0 +1,9 @@
+
+SCHEMA >
+    `station` String,
+    `avg_temp` Float32,
+    `min_temp` Float32,
+    `max_temp` Float32
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "station"
