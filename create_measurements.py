@@ -423,24 +423,25 @@ def measurement(mean_temperature):
     return round(m, 1)
 
 def generate_measurements():
-    counter = 0
     with open('measurements_python.csv', 'w', newline='') as csvfile:
         fieldnames = ['name', 'measurement']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         
-        
-        for station in stations:
-            m = measurement(station["average_temperature"])
+        i = 1
+        while i <= 1000000000:
+            for station in stations:
+                m = measurement(station["average_temperature"])
+                
+                writer.writerow({'name': station["name"], 'measurement': m})
+                i+=1
+                if i % 10000000 == 0:
+                    print("Processed", i, "rows")
+                
+                if i == 1000000000: 
+                    return
             
-            writer.writerow({'name': station["name"], 'measurement': m})
-            
-            counter += 1
-            if counter % 10000000 == 0:
-                print("Processed", counter, "rows")
-            
-            if counter == 1000000000: 
-             return
+
         
 
 generate_measurements()
