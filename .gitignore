@@ -45,3 +45,4 @@ measurements*.txt
 measurements*.csv
 
 .venv
+.tinyb
