@@ -42,5 +42,6 @@ nb-configuration.xml
 out/
 
 measurements*.txt
+measurements*.csv
 
 .venv
