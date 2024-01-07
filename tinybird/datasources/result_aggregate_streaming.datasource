@@ -1,0 +1,10 @@
+# Data Source created from Pipe 'aggregate_streaming'
+
+SCHEMA >
+    `station` String,
+    `avg_temp` Float32,
+    `min_temp` Float32,
+    `max_temp` Float32
+
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "station"

@@ -1,0 +1,7 @@
+
+SCHEMA >
+    `name` String `json:$.name`,
+    `value` Float32 `json:$.value`
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "name"

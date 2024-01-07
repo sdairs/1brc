@@ -1,0 +1,8 @@
+TOKEN "row_count_mv_endpoint_read_1253" READ
+
+NODE count
+SQL >
+
+    SELECT count() as row_count FROM measurements_streaming
+
+

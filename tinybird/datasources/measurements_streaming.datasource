@@ -1,0 +1,8 @@
+# Data Source created from Pipe 't_6b1b85bf9fa74080900d46424f29e1e8'
+
+SCHEMA >
+    `name` String `json:$.name`,
+    `measurement` Float32 `json:$.measurement`
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "name"

@@ -1,0 +1,17 @@
+NODE mv
+SQL >
+
+    SELECT
+        name AS station,
+        round(toFloat32(avg(measurement)), 1) AS avg_temp,
+        round(toFloat32(min(measurement)), 1) AS min_temp,
+        round(toFloat32(max(measurement)), 1) AS max_temp
+    FROM measurements_1b_static
+    GROUP BY station
+    ORDER BY station ASC
+
+TYPE materialized
+DATASOURCE result_aggregate_streaming
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "station"
+

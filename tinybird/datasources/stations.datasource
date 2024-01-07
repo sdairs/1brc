@@ -1,0 +1,7 @@
+
+SCHEMA >
+    `name` String,
+    `average_temperature` Float32
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "name"

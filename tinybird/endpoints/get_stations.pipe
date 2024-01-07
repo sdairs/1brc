@@ -1,0 +1,8 @@
+TOKEN "get_stations_endpoint_read_7919" READ
+
+NODE endpoint
+SQL >
+
+    SELECT name FROM stations
+
+
