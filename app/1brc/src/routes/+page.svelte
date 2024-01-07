@@ -4,6 +4,9 @@
 	import StationSelect from '../components/StationSelect.svelte';
 	import { onMount } from 'svelte';
 
+	/** @type {import('./$types').PageData} */
+	export let data;
+
 	const btn1 = () => {
 		alert('You clicked btn1.');
 	};
@@ -15,14 +18,7 @@
 		{ id: 4, maker: 'Saab', type: 'IJK', make: 2020 }
 	];
 
-	let stations;
-	onMount(() => {
-		stations = fetch('/api/tinybird/stations')
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data.data);
-			});
-	});
+	// onMount(() => {});
 </script>
 
 <main class="prose prose-xl mx-auto">
@@ -30,7 +26,7 @@
 	<p>1brc challenge from etc etc</p>
 	<h2>Batch</h2>
 	<p>Challenge done in batch etc etc</p>
-	<StationSelect {stations} />
+	<StationSelect staions={data.stations} />
 	<Button color="green" on:click={btn1}>Run batch 1️⃣🐝🏎️</Button>
 	<div class="py-8">
 		<Card>
@@ -43,7 +39,7 @@
 	<ResultTable {items} />
 	<h2>Realtime</h2>
 	<p>Challenge done in realtime etc etc</p>
-	<StationSelect {stations} />
+	<StationSelect staions={data.stations} />
 	<Button color="green" on:click={btn1}>Run realtime 1️⃣🐝🏎️</Button>
 	<div class="py-8">
 		<Card>

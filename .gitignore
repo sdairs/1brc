@@ -36,7 +36,7 @@ nb-configuration.xml
 *.rej
 
 # Local environment
-.env
+.env*
 
 #JReleaser
 out/
@@ -46,3 +46,5 @@ measurements*.csv
 
 .venv
 .tinyb
+.vercel
+.env*.local

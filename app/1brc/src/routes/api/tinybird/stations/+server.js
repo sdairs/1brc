@@ -1,4 +1,4 @@
-import { TINYBIRD_API_KEY } from '$env/static/public';
+import { TINYBIRD_API_KEY } from '$env/static/private';
 
 
 export async function GET() {
@@ -16,12 +16,7 @@ export async function GET() {
     if (!result.data) {
         console.error(`there is a problem running the query: ${result}`);
     } else {
-        console.table(result.data)
-        console.log("** Query columns **")
-        for (let column of result.meta) {
-            console.log(`${column.name} -> ${column.type}`)
-        }
-        return result;
+        return new Response(result);
     }
 }
 
