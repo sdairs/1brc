@@ -2,6 +2,7 @@
 	import { Card, Button } from 'flowbite-svelte';
 	import ResultTable from '../components/ResultTable.svelte';
 	import StationSelect from '../components/StationSelect.svelte';
+	import { onMount } from 'svelte';
 
 	const btn1 = () => {
 		alert('You clicked btn1.');
@@ -14,11 +15,14 @@
 		{ id: 4, maker: 'Saab', type: 'IJK', make: 2020 }
 	];
 
-	let stations = fetch('/api/tinybird/stations')
-		.then((res) => res.json())
-		.then((data) => {
-			console.log(data);
-		});
+	let stations;
+	onMount(() => {
+		stations = fetch('/api/tinybird/stations')
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data.data);
+			});
+	});
 </script>
 
 <main class="prose prose-xl mx-auto">
@@ -26,7 +30,7 @@
 	<p>1brc challenge from etc etc</p>
 	<h2>Batch</h2>
 	<p>Challenge done in batch etc etc</p>
-	<StationSelect />
+	<StationSelect {stations} />
 	<Button color="green" on:click={btn1}>Run batch 1️⃣🐝🏎️</Button>
 	<div class="py-8">
 		<Card>
@@ -39,7 +43,7 @@
 	<ResultTable {items} />
 	<h2>Realtime</h2>
 	<p>Challenge done in realtime etc etc</p>
-	<StationSelect />
+	<StationSelect {stations} />
 	<Button color="green" on:click={btn1}>Run realtime 1️⃣🐝🏎️</Button>
 	<div class="py-8">
 		<Card>
