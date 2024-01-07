@@ -1,4 +1,5 @@
 import { TINYBIRD_API_KEY } from '$env/static/private';
+import { json } from '@sveltejs/kit';
 
 
 export async function GET() {
@@ -16,7 +17,8 @@ export async function GET() {
     if (!result.data) {
         console.error(`there is a problem running the query: ${result}`);
     } else {
-        return new Response(result);
+        console.log(result)
+        return json(result);
     }
 }
 
