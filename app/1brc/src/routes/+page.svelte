@@ -17,6 +17,19 @@
 	let realtime_loading = false;
 	let realtime_stats = {};
 
+	let realtime_elapsed = 'Press Go!';
+	let batch_elapsed = 'Press Go!';
+	async function quick_go() {
+		realtime_elapsed = 'Running...';
+		batch_elapsed = 'Running...';
+		run(1).then((res) => {
+			batch_elapsed = res.statistics.elapsed.toString() + 's';
+		});
+		run().then((res) => {
+			realtime_elapsed = res.statistics.elapsed.toString() + 's';
+		});
+	}
+
 	async function run_button(batch = false) {
 		let results = await run(batch).then((res) => res);
 		if (batch) {
@@ -54,19 +67,6 @@
 		}).then((res) => res.json());
 		return result;
 	}
-
-	let items = [];
-
-	let realtime_elapsed = 'Running...';
-	let batch_elapsed = 'Running...';
-	onMount(() => {
-		run(1).then((res) => {
-			batch_elapsed = res.statistics.elapsed.toString() + 's';
-		});
-		run().then((res) => {
-			realtime_elapsed = res.statistics.elapsed.toString() + 's';
-		});
-	});
 </script>
 
 <main class="prose prose-xl mx-auto pb-48">
@@ -89,6 +89,11 @@
 	</p>
 	<div>
 		<h2>Quick results</h2>
+		<div>
+			<Button class="w-full my-2" color="green" on:click={quick_go}
+				>{#if !batch_loading}Go! 1️⃣🐝🏎️{:else}Loading...{/if}</Button
+			>
+		</div>
 		<div class="md:columns-2 columns-1">
 			<div>
 				<Card>
