@@ -118,6 +118,9 @@
 		pretty quickly even in batch, it can be solved super efficiently as a realtime/streaming
 		problem, too.
 	</p>
+	<Button href="https://github.com/sdairs/1brc" color="dark" size="xl" class="w-full"
+		>View on GitHub</Button
+	>
 	<div>
 		<h2>Quick results</h2>
 		<div>
