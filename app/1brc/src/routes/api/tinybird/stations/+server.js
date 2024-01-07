@@ -17,7 +17,6 @@ export async function GET() {
     if (!result.data) {
         console.error(`there is a problem running the query: ${result}`);
     } else {
-        console.log(result)
         return json(result);
     }
 }
