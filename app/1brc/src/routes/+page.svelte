@@ -16,6 +16,9 @@
 	let realtime_results = [];
 	let realtime_loading = false;
 	let realtime_stats = {};
+	let realtime_row_count = 0;
+	let realtime_ingest_error = false;
+	let realtime_ingest_has_sent = false;
 
 	let realtime_elapsed = 'Press Go!';
 	let batch_elapsed = 'Press Go!';
@@ -39,7 +42,6 @@
 			batch_loading = false;
 		} else {
 			realtime_loading = true;
-			console.log(results);
 			realtime_results = results.data;
 			realtime_stats = results.statistics;
 			realtime_loading = false;
@@ -67,6 +69,35 @@
 		}).then((res) => res.json());
 		return result;
 	}
+
+	async function update_streaming_row_count(delay = false) {
+		if (delay) await new Promise((r) => setTimeout(r, 1000));
+		let result = await fetch('/api/tinybird/row_count', {
+			headers: {
+				accept: 'application/json'
+			}
+		}).then((res) => res.json());
+		realtime_row_count = result.data[0].row_count;
+	}
+
+	async function ingest_rows() {
+		let result = await fetch('/api/tinybird/ingest', {
+			headers: {
+				accept: 'application/json'
+			}
+		}).then((res) => res.json());
+		if (result == 202) {
+			realtime_ingest_has_sent = true;
+			update_streaming_row_count(true);
+		} else {
+			realtime_ingest_error = true;
+		}
+		return result;
+	}
+
+	onMount(async () => {
+		update_streaming_row_count(false);
+	});
 </script>
 
 <main class="prose prose-xl mx-auto pb-48">
@@ -116,11 +147,15 @@
 		</div>
 	</div>
 	<div>
-		<h2>Interactive</h2>
+		<h2>Playground</h2>
 		<p>
 			Hit the run buttons to execute the queries. By default, no filters are applied, aggregating
 			for all 413 stations. Filter for a single station using the selector (this applies a WHERE
 			clause and re-executes the query, to show you how efficient filtering is).
+		</p>
+		<p>
+			There have been <b>{realtime_row_count}</b> measurements ingested through the streaming source,
+			while the batch source remains at a static 1 billion.
 		</p>
 		<div>
 			<h3>Batch</h3>
@@ -135,8 +170,8 @@
 					stations={data.stations}
 					bind:selected={batch_station_filter}
 				/>
-				<Button class="w-full mt-2" color="green" on:click={() => run_button(true)}
-					>{#if !batch_loading}Run batch 1️⃣🐝🏎️{:else}Loading...{/if}</Button
+				<Button class="w-full mt-2" size="xl" color="green" on:click={() => run_button(true)}
+					>{#if !batch_loading}EXECUTE BATCH{:else}Loading...{/if}</Button
 				>
 			</form>
 			<div>
@@ -161,12 +196,21 @@
 					stations={data.stations}
 					bind:selected={realtime_station_filter}
 				/>
-				<Button class="w-full mt-2" color="green" on:click={() => run_button(false)}
-					>{#if !realtime_loading}Run realtime 1️⃣🐝🏎️{:else}Loading...{/if}</Button
+				<Button class="w-full mt-2" size="xl" color="green" on:click={() => run_button(false)}
+					>{#if !realtime_loading}EXECUTE REALTIME{:else}Loading...{/if}</Button
 				>
 			</form>
+			<Button color="yellow" class="w-full mt-2" size="xl" on:click={ingest_rows}>
+				{#if realtime_ingest_error}
+					Failed 😭 Try again? 🚀
+				{:else if !realtime_ingest_has_sent}
+					{realtime_row_count} rows - send more? 🚀
+				{:else}
+					{realtime_row_count} rows - SEND MORE? 🚀
+				{/if}
+			</Button>
 			<div>
-				<ResultStats stats={realtime_stats} />
+				<ResultStats stats={realtime_stats} {realtime_row_count} />
 			</div>
 			<div class="h-96 overflow-y-scroll border mt-2">
 				<ResultTable items={realtime_results} />

@@ -19,6 +19,6 @@
 		class="w-full md:mt-0 mt-2"
 		on:click={() => {
 			selected = '';
-		}}>Clear</Button
+		}}>Clear filter</Button
 	>
 </div>
