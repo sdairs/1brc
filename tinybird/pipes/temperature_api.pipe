@@ -1,0 +1,25 @@
+TOKEN "batch_api_endpoint_read_1582" READ
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT *
+    {% if defined(type) and type == 'batch' %} FROM aggregate_batch
+    {% else %} FROM result_aggregate_streaming
+    {% end %}
+    {% if defined(station) %}
+        WHERE
+            station
+            == {{
+                String(
+                    station,
+                    'London',
+                    description="Station name",
+                    required=True,
+                )
+            }}
+    {% end %}
+    ORDER BY station
+
+
