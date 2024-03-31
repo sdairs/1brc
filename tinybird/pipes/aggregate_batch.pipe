@@ -1,0 +1,15 @@
+TOKEN "aggregate_batch_endpoint_read_6592" READ
+
+NODE calc
+SQL >
+
+    SELECT
+        name as station,
+        round(toFloat32(avg(measurement)), 1) as avg_temp,
+        round(toFloat32(min(measurement)), 1) as min_temp,
+        round(toFloat32(max(measurement)), 1) as max_temp
+    FROM measurements_1b_static
+    GROUP BY station
+    ORDER BY station
+
+
